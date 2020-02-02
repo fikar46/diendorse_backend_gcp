@@ -16,16 +16,21 @@
 
 // [START gae_node_request_example]
 const express = require('express');
-
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
-
+const {authRouter} = require('./router')
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
+app.use(express.static('public'))
+app.use(cors())
 app.get('/', (req, res) => {
   res
     .status(200)
     .send('selamat datang di api diendorse!')
     .end();
 });
-
+app.use('/auth', authRouter);
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
