@@ -6,5 +6,6 @@ const {auth} = require('./../helpers/jwt')
 
 router.post('/register', authController.register);
 router.get('/getuser',authController.getLengthUser);
+router.get('/testjwt',auth,authController.getLengthUser);
 router.post('/login',authController.login);
 module.exports = router;
