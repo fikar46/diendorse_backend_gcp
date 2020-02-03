@@ -5,11 +5,10 @@ var config = require ('../config');
 module.exports = {
     createJWTToken(payload, time){
         // console.log(payload)
-        var duration = '1h' //defaults to 12 hours
         if(time){
             duration = time
         }
-        return jwt.sign(payload, config.jwtKey, { expiresIn : duration })
+        return jwt.sign(payload, config.jwtKey)
     },
     auth : (req, res, next) => {
         // console.log(req.method)

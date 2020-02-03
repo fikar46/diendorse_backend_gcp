@@ -1,10 +1,11 @@
 var Crypto = require('crypto');
 const conn = require('../database');
+const { createJWTToken } = require('./../helpers/jwt')
 
 module.exports = {
     register: (req,res) => {
         
-        var { fullname, username, email, password } = req.body;
+        var { fullname, username, email, password,role } = req.body;
        
         var sql = `SELECT username, email FROM users WHERE username='${username}' or email='${email}'`;
         conn.query(sql, (err, result) =>{
@@ -19,16 +20,19 @@ module.exports = {
                     password: hashPassword,
                     email,
                     fullname,
-                    role: 'User'
+                    role
                 }
                 sql = `INSERT INTO users SET ?`;
+                const token = createJWTToken({username,email,fullname,role,verified : 0})
                 conn.query(sql, dataUser, (err1, result1) => {
-                  res.send({username, email, role: 'User', status: 'Unverified', token:''})   
+                    if(err1) throw err1
+                    res.send({username, email, role, verified: '0', token:token,fullname})   
                 })
                
             }
         })
     },
+
     getLengthUser: (req,res) => {
         var sql = `select count(*) as sum from users`
         conn.query(sql, (err, result) => {
@@ -39,21 +43,28 @@ module.exports = {
             }
         })
     },
+
     login : (req,res) => {
-        let { username,password } = req.body
+        let { username,password } = req.body;
+        const hashPassword = Crypto.createHmac('sha256', "abcd123")
+        .update(password).digest('hex');
         let sql = 'select * from users where username = ? and password = ?;'
 
         try{
-            conn.query(sql,[username,password],(err,result) => {
+            conn.query(sql,[username,hashPassword],(err,result) => {
                 if(err) throw err
                 if(result.length == 0){
                     res.status(409).send({status: "error", message: "Username or Email Invalid!"})
-                }            
-                res.status(200).send({status:"error" , data : result[0]})
+                }       
+                const token = createJWTToken({username,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,verified : result[0].verified})
+                res.status(200).send({username,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token})
             })
         }catch(err){
+            console.log(err.message)
             res.status(409).send({status: "error", message: err.message})            
         }
 
-    }
+    },
+
+    
 }
