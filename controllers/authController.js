@@ -38,5 +38,22 @@ module.exports = {
                 res.send({result})   
             }
         })
+    },
+    login : (req,res) => {
+        let { username,password } = req.body
+        let sql = 'select * from users where username = ? and password = ?;'
+
+        try{
+            conn.query(sql,[username,password],(err,result) => {
+                if(err) throw err
+                if(result.length == 0){
+                    res.status(409).send({status: "error", message: "Username or Email Invalid!"})
+                }            
+                res.status(200).send({status:"error" , data : result[0]})
+            })
+        }catch(err){
+            res.status(409).send({status: "error", message: err.message})            
+        }
+
     }
 }
