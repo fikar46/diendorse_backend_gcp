@@ -18,12 +18,16 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const bearerToken = require('express-bearer-token');
+
 const app = express();
 const {authRouter} = require('./router')
+app.use(bearerToken())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 app.use(cors())
+
 app.get('/', (req, res) => {
   res
     .status(200)
