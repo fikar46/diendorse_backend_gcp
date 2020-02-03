@@ -5,28 +5,27 @@ const { createJWTToken } = require('./../helpers/jwt')
 module.exports = {
     register: (req,res) => {
         
-        var { fullname, username, email, password,role } = req.body;
+        var { fullname, email, password,role } = req.body;
        
-        var sql = `SELECT username, email FROM users WHERE username='${username}' or email='${email}'`;
+        var sql = `SELECT email FROM users WHERE email='${email}'`;
         conn.query(sql, (err, result) =>{
              // console.log(Error('Error Auth controller'));
             if(result.length > 0){
-                res.status(409).send({status: "error", message: "Username or Email has been taken!"})
+                res.status(409).send({status: "error", message: "Email has been taken!"})
             } else {
                 const hashPassword = Crypto.createHmac('sha256', "abcd123")
                             .update(password).digest('hex');
                 var dataUser = { 
-                    username,
                     password: hashPassword,
                     email,
                     fullname,
                     role
                 }
                 sql = `INSERT INTO users SET ?`;
-                const token = createJWTToken({username,email,fullname,role,verified : 0})
+                const token = createJWTToken({email,fullname,role,verified : 0})
                 conn.query(sql, dataUser, (err1, result1) => {
                     if(err1) throw err1
-                    res.send({username, email, role, verified: '0', token:token,fullname})   
+                    res.send({email, role, verified: '0', token:token,fullname})   
                 })
                
             }
