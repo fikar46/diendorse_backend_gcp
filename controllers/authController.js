@@ -32,7 +32,7 @@ module.exports = {
                         subject : 'Hola pengguna diendorse',
                         html: `<p><b>Hallo ${fullname}</b></p>
                         <p>Terimakasih telah bergabung menjadi pengguna diendorse</p>
-                        <p>klik link dibawah ini untuk memverifikaasi email ini</p>
+                        <p>klik link dibawah ini untuk memverifikasi email ini</p>
                         <br><br>
                         <a href="http://localhost:3000/email-verification?email=${email}&&fullname=${fullname}">Klik disini</a>
                         `
