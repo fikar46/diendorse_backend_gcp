@@ -76,8 +76,6 @@ module.exports = {
 
     login : (req,res) => {
         let { email,password } = req.body;
-        console.log(email)
-        console.log(password)
         const hashPassword = Crypto.createHmac('sha256', "abcd123")
         .update(password).digest('hex');
         let sql = 'select * from users where email = ? and password = ?;'
