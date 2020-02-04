@@ -8,6 +8,6 @@ const conn = mysql.createPool({
     database:'diendorse',
     // port aktif ketika menggunakan cara proxy selain unix
     port: 3308,
-    // socketPath: `/cloudsql/diendorse:asia-southeast1:diendorse`,
+    socketPath: `/cloudsql/diendorse:asia-southeast1:diendorse`,
 });  
 module.exports = conn;

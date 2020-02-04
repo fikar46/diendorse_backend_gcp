@@ -54,19 +54,24 @@ module.exports = {
     },
 
     login : (req,res) => {
-        let { username,password } = req.body;
+        let { email,password } = req.body;
+        console.log(email)
+        console.log(password)
         const hashPassword = Crypto.createHmac('sha256', "abcd123")
         .update(password).digest('hex');
-        let sql = 'select * from users where username = ? and password = ?;'
+        let sql = 'select * from users where email = ? and password = ?;'
 
         try{
-            conn.query(sql,[username,hashPassword],(err,result) => {
+            conn.query(sql,[email,hashPassword],(err,result) => {
                 if(err) throw err
                 if(result.length == 0){
-                    res.status(409).send({status: "error", message: "Username or Email Invalid!"})
+                    return res.status(200).send({error: true, message: "Email or Password Invalid!"})
                 }       
-                const token = createJWTToken({username,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,verified : result[0].verified})
-                res.status(200).send({username,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token})
+                const token = createJWTToken({email : result[0].email ,fullname : result[0].fullname,role : result[0].role,verified : result[0].verified})
+                const data = {
+                    email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token
+                }
+                res.status(200).send({error : false, data:data })
             })
         }catch(err){
             console.log(err.message)
