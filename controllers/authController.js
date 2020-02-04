@@ -1,6 +1,7 @@
 var Crypto = require('crypto');
 const conn = require('../database');
 const { createJWTToken } = require('./../helpers/jwt')
+const transporter = require('../helpers/emailSender');
 
 module.exports = {
     register: (req,res) => {
@@ -25,6 +26,26 @@ module.exports = {
                 const token = createJWTToken({email,fullname,role,verified : 0})
                 conn.query(sql, dataUser, (err1, result1) => {
                     if(err1) throw err1
+                    var mailOptions = {
+                        from: 'No Reply <mzulfikarmey@gmail.com>',
+                        to : email,
+                        subject : 'Hola pengguna diendorse',
+                        html: `<p><b>Hallo ${fullname}</b></p>
+                        <p>Terimakasih telah bergabung menjadi pengguna diendorse</p>
+                        <p>klik link dibawah ini untuk memverifikaasi email ini</p>
+                        <br><br>
+                        <a href="http://localhost:3000/email-verification?email=${email}&&fullname=${fullname}">Klik disini</a>
+                        `
+                    }
+
+                    transporter.sendMail(mailOptions, (err2, res2) => {
+                        if(err2){
+                            // res.send({status: 'Error!', message: 'Error sending message'})
+                            throw err2;
+                        } else {
+                            res.send({username, email, role: 'User', status: 'Unverified', token:''})
+                        }
+                    })
                     res.send({email, role, verified: '0', token:token,fullname})   
                 })
                
@@ -80,5 +101,15 @@ module.exports = {
 
     },
 
-    
+    verificationEmail: (req,res) => {
+        var {email} = req.body;
+        var sql = `update users set verified= 1 where email ="${email}"`;
+        conn.query(sql, (err, result) => {
+            if(err){
+                throw err
+            }else{
+                res.send({result})   
+            }
+        })
+    },
 }

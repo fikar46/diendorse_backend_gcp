@@ -5,6 +5,7 @@ const {auth} = require('./../helpers/jwt')
 
 
 router.post('/register', authController.register);
+router.post('/email-verification', authController.verificationEmail);
 router.get('/getuser',authController.getLengthUser);
 router.get('/testjwt',auth,authController.getLengthUser);
 router.post('/login',authController.login);
