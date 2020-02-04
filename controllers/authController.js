@@ -31,7 +31,17 @@ module.exports = {
             }
         })
     },
-
+    updateRoleUser:(req,res) => {
+        var {id,email,role} = req.body;
+        var sql = `update users set role= "${role}" where id = ${id} and email ="${email}"`;
+        conn.query(sql, (err, result) => {
+            if(err){
+                throw err
+            }else{
+                res.send({result})   
+            }
+        })
+    },
     getLengthUser: (req,res) => {
         var sql = `select count(*) as sum from users`
         conn.query(sql, (err, result) => {

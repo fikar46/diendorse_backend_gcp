@@ -8,4 +8,5 @@ router.post('/register', authController.register);
 router.get('/getuser',authController.getLengthUser);
 router.get('/testjwt',auth,authController.getLengthUser);
 router.post('/login',authController.login);
+router.post('/updateroleuser',auth,authController.updateRoleUser);
 module.exports = router;
