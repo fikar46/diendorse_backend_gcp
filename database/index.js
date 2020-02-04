@@ -1,11 +1,13 @@
 const mysql = require('mysql');
 
 const conn = mysql.createPool({
-    // host:'localhost',
+    // localhost aktif ketika menggunakan cara proxy selain unix
+    // host:'localhost', 
     user:'root',
     password:'fikar123',
     database:'diendorse',
-    // port: 3306,
+    // port aktif ketika menggunakan cara proxy selain unix
+    // port: 3308,
     socketPath: `/cloudsql/diendorse:asia-southeast1:diendorse`,
 });  
 module.exports = conn;
