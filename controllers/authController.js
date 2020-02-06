@@ -53,8 +53,8 @@ module.exports = {
         })
     },
     updateRoleUser:(req,res) => {
-        var {email,role} = req.body;
-        var sql = `update users set role= "${role}" where email ="${email}"`;
+        var {id,role} = req.body;
+        var sql = `update users set role= "${role}" where id ="${id}"`;
         conn.query(sql, (err, result) => {
             if(err){
                 throw err
@@ -88,7 +88,7 @@ module.exports = {
                 }       
                 const token = createJWTToken({email : result[0].email ,fullname : result[0].fullname,role : result[0].role,verified : result[0].verified})
                 const data = {
-                    email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token
+                    id:result[0].id,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token
                 }
                 res.status(200).send({error : false, data:data })
             })
