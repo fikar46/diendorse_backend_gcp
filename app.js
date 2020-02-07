@@ -21,7 +21,7 @@ const bodyParser = require('body-parser');
 const bearerToken = require('express-bearer-token');
 
 const app = express();
-const {authRouter} = require('./router')
+const {authRouter,projectRouter} = require('./router')
 app.use(bearerToken())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
@@ -35,6 +35,7 @@ app.get('/', (req, res) => {
     .end();
 });
 app.use('/auth', authRouter);
+app.use('/project', projectRouter);
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
