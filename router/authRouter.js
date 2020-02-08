@@ -13,6 +13,8 @@ router.post('/updateroleuser',auth,authController.updateRoleUser);
 router.post('/completeprofile/:id_user',auth,authController.completeProfile);
 router.get('/getuserdetail/:id_user',auth,authController.getUserDetail);
 router.get('/getallkabupaten',auth,authController.getAllKabupaten);
+router.post('/changepassword',auth,authController.changePassword);
+
 
 
 module.exports = router;

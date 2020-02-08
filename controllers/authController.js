@@ -3,6 +3,7 @@ const conn = require('../database');
 const { createJWTToken } = require('./../helpers/jwt')
 const transporter = require('../helpers/emailSender');
 
+
 module.exports = {
     register: (req,res) => {
         
@@ -175,6 +176,31 @@ module.exports = {
             // console.log('masuk')
             if(err) throw err
             res.send({error : false,data: result})
+        })
+    },
+
+    changePassword : (req,res) => {
+        var oldPassword = req.body.old
+        var newPassword = req.body.new
+        var id_user = req.body.id_user
+
+        const hashPassword = Crypto.createHmac('sha256', "abcd123")
+                            .update(oldPassword).digest('hex');
+
+        const hashPasswordNew = Crypto.createHmac('sha256', "abcd123")
+                            .update(newPassword).digest('hex');
+
+        var sql = 'select * from users where id = ? and password = ?;'
+        conn.query(sql,[id_user,hashPassword],(err,result) => {
+            if(err) throw err
+            if(result.length > 0){
+                var sql = 'update users set ? where id = ?;'
+                conn.query(sql,[{password : hashPasswordNew}, id_user],(err,result) => {
+                    res.send({error : false,message : 'Password Updated'})
+                })
+            }else{
+                res.send({error : true,message : 'Password Invalid'})
+            }
         })
     }
 }
