@@ -88,7 +88,7 @@ module.exports = {
                 }       
                 const token = createJWTToken({email : result[0].email ,fullname : result[0].fullname,role : result[0].role,verified : result[0].verified})
                 const data = {
-                    id:result[0].id,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token
+                    id:result[0].id,email : result[0].email ,fullname : result[0].fullname,role : result[0].role,status : result[0].verified,token,created_at : result[0].created_at
                 }
                 res.status(200).send({error : false, data:data })
             })
@@ -110,4 +110,57 @@ module.exports = {
             }
         })
     },
+
+    completeProfile : (req,res) => {
+
+        var data = req.body;
+        var id_user = req.params.id_user
+        var fullname = req.body.fullname
+        delete data.fullname
+        if(fullname !== ''){
+            console.log('sql 1')
+            conn.query('update users set fullname = ? where id = ?;',[fullname,id_user],(err,result) => {
+                if(err) throw err
+            })
+        }
+
+
+        var sql_select = 'select * from user_details where id_user = ?'
+        console.log('sql 2')
+
+        conn.query(sql_select,id_user,(err,result) => {
+            if(err) throw err
+            if(result.length > 0){
+                // EDIT
+                console.log('sql 3')
+
+                var sql_edit = 'update user_details set ? where id_user = ?'
+                conn.query(sql_edit,[data,id_user],(err,result) => {
+                    if(err) throw err
+                    res.redirect('/auth/getuserdetail/' + id_user)
+                })
+            }else{
+                console.log('sql 4')
+                // ADD
+                data.id_user = id_user
+                var sql_add = 'insert into user_details set ?'
+                conn.query(sql_add,data,(err,result) => {
+                    if(err) throw err
+                    res.redirect('/auth/getuserdetail/' + id_user)    
+                })
+            }
+        })
+
+    },
+    getUserDetail : (req,res) => {
+        var user_id = req.params.id_user
+        var sql = 'select * from user_details where id_user = ?'
+        conn.query(sql,user_id,(err,result) => {
+            if(err) throw err
+            res.send({
+                error : false,
+                data : result[0]
+            })
+        })
+    }
 }

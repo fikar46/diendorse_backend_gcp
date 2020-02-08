@@ -10,4 +10,8 @@ router.get('/getuser',authController.getLengthUser);
 router.get('/testjwt',auth,authController.getLengthUser);
 router.post('/login',authController.login);
 router.post('/updateroleuser',auth,authController.updateRoleUser);
+router.post('/completeprofile/:id_user',auth,authController.completeProfile);
+router.get('/getuserdetail/:id_user',auth,authController.getUserDetail);
+
+
 module.exports = router;
