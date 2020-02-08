@@ -43,10 +43,15 @@ module.exports = {
                             // res.send({status: 'Error!', message: 'Error sending message'})
                             throw err2;
                         } else {
-                            res.send({username, email, role: 'User', status: 'Unverified', token:''})
+                            var sql_select  = 'select id,created_at from users where email = ?'
+                            conn.query(sql_select,email ,(err,result_3) => {
+                                if(err) throw err
+                                res.send({fullname, email, role: 'User', status: 'Unverified', token:token , id : result_3[0].id,created_at : result_3[0].created_at})
+                            })
                         }
                     })
-                    res.send({email, role, verified: '0', token:token,fullname})   
+                    
+                    // res.send({email, role, verified: '0', token:token,fullname})   
                 })
                
             }
@@ -156,11 +161,20 @@ module.exports = {
         var user_id = req.params.id_user
         var sql = 'select * from user_details where id_user = ?'
         conn.query(sql,user_id,(err,result) => {
+            console.log(result[0])
             if(err) throw err
             res.send({
                 error : false,
                 data : result[0]
             })
+        })
+    },
+    getAllKabupaten : (req,res) => {
+        var sql = 'select * from kabupaten;'
+        conn.query(sql,(err,result) => {
+            // console.log('masuk')
+            if(err) throw err
+            res.send({error : false,data: result})
         })
     }
 }
