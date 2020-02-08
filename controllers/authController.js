@@ -3,7 +3,6 @@ const conn = require('../database');
 const { createJWTToken } = require('./../helpers/jwt')
 const transporter = require('../helpers/emailSender');
 
-
 module.exports = {
     register: (req,res) => {
         
@@ -160,14 +159,39 @@ module.exports = {
     },
     getUserDetail : (req,res) => {
         var user_id = req.params.id_user
+        console.log(user_id)
         var sql = 'select * from user_details where id_user = ?'
+        let data ={}
         conn.query(sql,user_id,(err,result) => {
-            console.log(result[0])
             if(err) throw err
-            res.send({
-                error : false,
-                data : result[0]
-            })
+            console.log(result.length)
+            // if(result.length > 0){
+                data = result
+                console.log('masuk')
+                var sql = 'select fullname from users where id = ?'
+                conn.query(sql,user_id,(err,result_2) => {
+                    if(err) throw err
+                    console.log(result_2[0].fullname)
+                    if(data.length > 0){
+                        data = data[0]
+                        console.log('masuk')
+                        console.log(data)
+                        data.fullname = result_2[0].fullname
+                        console.log(data)
+                        res.send({
+                            error : false,
+                            data : data
+                        })
+                    }
+                    res.send({
+                        error : false,
+                        data : {fullname : result_2[0].fullname}
+                    })
+                    
+                })
+            // }
+            
+            // data = {...data,}
         })
     },
     getAllKabupaten : (req,res) => {
