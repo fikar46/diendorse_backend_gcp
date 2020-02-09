@@ -25,8 +25,10 @@ const {authRouter,projectRouter} = require('./router')
 app.use(bearerToken())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-app.use(express.static('public'))
+// app.use(express.static('public'))
 app.use(cors())
+// app.use('/uploads',express.static('uploads'))
+app.use('/public',express.static('public'))
 
 app.get('/', (req, res) => {
   res

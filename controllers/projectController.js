@@ -228,5 +228,18 @@ module.exports = {
                 })
             }
         })
+    },
+    getOnBiddingByid:(req,res)=>{
+        var sql = `SELECT p.id,p.product_name,b.status_bidding,u.email,u.fullname, b.createdAt from project_ads p 
+        JOIN bidding b on b.id_project_ads = p.id
+        join users u on p.id_user = u.id
+        WHERE b.id_user = ${req.params.id_user};`
+        conn.query(sql,(err, result) => {
+            if(err){
+                throw err
+            }else{
+                res.send(result)   
+            }
+        })
     }
 }

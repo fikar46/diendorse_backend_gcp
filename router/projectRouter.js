@@ -9,6 +9,7 @@ router.get('/get-ongoing-ads-all/:id_user',auth,projectController.getAdsOngoingA
 router.post('/get-ongoing-ads-detail',auth,projectController.getAdsOngoingDetail);
 router.get('/get-history-ads/:id_user',auth,projectController.getAdsHistory);
 router.get('/get-history-ads-all/:id_user',auth,projectController.getAdsHistoryAll);
+router.get('/get-onbidding-by-id/:id_user',auth,projectController.getOnBiddingByid);
 router.get('/category-ads',auth,projectController.categorAds);
 router.post('/upload-file',auth,projectController.uploadFile);
 router.post('/get-all-ads-ongoing',auth,projectController.getAllAdsOnGoing);
