@@ -1,5 +1,5 @@
 const conn = require('../database');
-
+var {uploader} = require('../helpers/uploader')
 module.exports = {
     categorAds:(req,res)=>{
         var sql = `select * from category_ads;`;
@@ -23,7 +23,31 @@ module.exports = {
         })
     },
     getAdsOngoing:(req,res)=>{
-        var sql =`SELECT * from project_ads WHERE status_ads != 5 and id_user= ${req.params.id_user} order by id desc limit 3;`
+        var sql =`SELECT * from project_ads WHERE status_ads != 5 and id_user= ${req.params.id_user} order by created_ads desc limit 3;`
+        conn.query(sql,(err, result) => {
+            // console.log(result)
+            if(err){
+                throw err
+            }else{
+                res.send(result)   
+            }
+        })
+    },
+    getAdsOngoingAll:(req,res)=>{
+        var sql =`SELECT * from project_ads WHERE status_ads != 5 and id_user= ${req.params.id_user} order by created_ads desc;`
+        conn.query(sql,(err, result) => {
+            // console.log(result)
+            if(err){
+                throw err
+            }else{
+                res.send(result)   
+            }
+        })
+    },
+    getAdsOngoingDetail:(req,res)=>{
+        var sql =`SELECT * from project_ads p
+        left join category_ads c on c.id = p.category
+        WHERE p.id = ${req.body.id_project} and p.id_user= ${req.body.id_user};`
         conn.query(sql,(err, result) => {
             // console.log(result)
             if(err){
@@ -34,7 +58,7 @@ module.exports = {
         })
     },
     getAdsHistory:(req,res)=>{
-        var sql =`SELECT * from project_ads WHERE status_ads = 5 and id_user= ${req.params.id_user} order by id desc limit 3;`
+        var sql =`SELECT * from project_ads WHERE status_ads = 5 and id_user= ${req.params.id_user} order by created_ads desc limit 3;`
         conn.query(sql,(err, result) => {
             // console.log(result)
             if(err){
@@ -43,6 +67,37 @@ module.exports = {
                 res.send(result)   
             }
         })
+    },
+    getAdsHistoryAll:(req,res)=>{
+        var sql =`SELECT * from project_ads WHERE status_ads = 5 and id_user= ${req.params.id_user} order by created_ads desc;`
+        conn.query(sql,(err, result) => {
+            // console.log(result)
+            if(err){
+                throw err
+            }else{
+                res.send(result)   
+            }
+        })
+    },
+    uploadFile: (req,res) => {
+        try {
+            const path = '/file/ads'; //file save path
+            const upload = uploader(path, 'ADS').fields([{ name: 'file'}]); //uploader(path, 'default prefix')
+    
+            upload(req, res, (err) => {
+                if(err){
+                    return res.status(500).json({ message: 'Upload file failed !', error: err.message });
+                }
+    
+                const { file } = req.files;
+                // console.log(file)
+                // const imagePath = file ? path + '/' + file[0].filename : null;
+                // console.log(imagePath)
+                res.send(file)    
+            })
+        } catch(err) {
+            return res.status(500).json({ message: "There's an error on the server. Please contact the administrator.", error: err.message });
+        }
     },
     getAllAdsOnGoing : (req,res) => {
         var categories = req.body.categories ? req.body.categories : []
@@ -69,7 +124,7 @@ module.exports = {
                 }else{
                     sql += ' category_name = "' + val +  '" ' 
                 }
-                
+
             })
             sql += ')'
         }
