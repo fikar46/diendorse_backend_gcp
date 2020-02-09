@@ -14,4 +14,5 @@ router.post('/upload-file',auth,projectController.uploadFile);
 router.post('/get-all-ads-ongoing',auth,projectController.getAllAdsOnGoing);
 router.get('/get-all-category',auth,projectController.getAllCategoris);
 router.get('/get-all-kabupaten',auth,projectController.getAllKabupaten);
+router.get('/get-project-ads-by-id',auth,projectController.getAdsById);
 module.exports = router;
