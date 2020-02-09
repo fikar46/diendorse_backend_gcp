@@ -200,13 +200,13 @@ module.exports = {
         c.name as category_name
         from project_ads p 
         join users u on p.id_user = u.id
-        join category_ads c on c.id = p.category where id= ${req.params.id}`
+        join category_ads c on c.id = p.category where p.id= ${req.params.id}`
 
         conn.query(sql,(err,result) => {
             if(err) throw err
             res.send({
                 error : false,
-                data : result
+                data : result[0]
             })
         })
 
