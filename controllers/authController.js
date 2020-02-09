@@ -182,11 +182,12 @@ module.exports = {
                             error : false,
                             data : data
                         })
+                    }else{
+                        res.send({
+                            error : false,
+                            data : {fullname : result_2[0].fullname}
+                        })
                     }
-                    res.send({
-                        error : false,
-                        data : {fullname : result_2[0].fullname}
-                    })
                     
                 })
             // }
