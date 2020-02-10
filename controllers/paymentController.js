@@ -172,5 +172,45 @@ module.exports = {
                 })
           
         
+    },
+    getTransaksiById:(req,res)=>{
+        var sql = `select status from transactions  where id_user = ${req.body.id_user} and id_ads = ${req.body.id_project}`;
+        conn.query(sql,(err, result) => {
+            
+            if(result.length>0 || result != undefined){
+                if(result[0].status == "Y"){
+                    var update = `update project_ads set status_ads = 2 where id_user = ${req.body.id_user} and id = ${req.body.id_project} `
+                    conn.query(update,(err,result)=>{
+                        if(err){
+                            throw err
+                        }
+                        var update2 = `update bidding set status_bidding = 2 where status_bidding < 2 and id_project_ads = ${req.body.id_project} `
+                        conn.query(update2,(err2,result2)=>{
+                            if(err2){
+                                throw err2
+                            }
+                            res.send({message:"update"})
+                        })    
+                    })
+                }else{
+                    res.send(result)
+                }
+            }
+            // if(err){
+            //     // throw err
+            //     console.log(err)
+            // }else{
+            //     res.send(result)   
+            // }
+        })
+    },
+    aproveInfuencer:(req,res)=>{
+        var update = `update project_ads set status_ads = 5 where id_user = ${req.body.id_user} and id = ${req.body.id_project} `
+                    conn.query(update,(err,result)=>{
+                        if(err){
+                            throw err
+                        }
+                        res.send(result)    
+                    })
     }
 }
