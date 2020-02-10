@@ -227,5 +227,14 @@ module.exports = {
                 res.send({error : true,message : 'Password Invalid'})
             }
         })
+    },
+    getUserById : (req,res) => {
+        var sql = `select * from users u 
+        join user_details ud on u.id = ud.id_user where u.id = ${req.params.id};`
+
+        conn.query(sql,(err,result) => {
+            if(err) throw err
+            res.send({error : false,data : result})
+        })
     }
 }
