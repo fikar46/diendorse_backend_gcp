@@ -21,6 +21,6 @@ router.post('/bid-now',auth,projectController.bidNow);
 router.post('/update-ads-status',projectController.updateAdsStatus);
 router.get('/get-data-bid-by-id-project/:id_ads',auth,projectController.getDataBiddingByIdProject)
 router.get('/get-all-bids',auth,projectController.getAllBids)
-router.post('/get-data-id-with-status-and-id-ads',auth,projectController.getDataBidingWithStatusAndIdAds)
+router.post('/get-data-bid-with-status-and-id-ads',auth,projectController.getDataBidingWithStatusAndIdAds)
 
 module.exports = router;

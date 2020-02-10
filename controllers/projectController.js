@@ -243,7 +243,7 @@ module.exports = {
         })
     },
     getDataUsersBidding:(req,res)=>{
-        var sql = `SELECT b.id as id_biding, u.fullname,ud.username_ig,ud.followers_ig,ud.engagement_ig,ud.place from bidding b 
+        var sql = `SELECT b.id as id_biding,b.price as price, u.fullname,ud.username_ig,ud.followers_ig,ud.engagement_ig,ud.place from bidding b 
         join users u on u.id = b.id_user
         left join user_details ud on ud.id_user = u.id
         WHERE b.id_project_ads =${req.params.id_ads} and b.status_bidding =0 ORDER by b.id DESC;`
@@ -283,10 +283,10 @@ module.exports = {
         let id_ads = req.body.id_ads
         let status = req.body.status
 
-        var sql = `select * from bidding b 
-        join users u on b.id_user = u.id
-        join user_details ud on b.id_user = ud.id_user
-        join project_ads p on b.id_project_ads = p.id where p.id = ${id_ads} and b.status_bidding= ${status};`
+        var sql = `SELECT b.id as id_biding,b.price as price, u.fullname,ud.username_ig,ud.followers_ig,ud.engagement_ig,ud.place from bidding b 
+        join users u on u.id = b.id_user
+        left join user_details ud on ud.id_user = u.id
+        WHERE b.id_project_ads =${id_ads} and b.status_bidding =${status} ORDER by b.id DESC;`
 
         conn.query(sql,(err,result) => {
             if(err) throw err
