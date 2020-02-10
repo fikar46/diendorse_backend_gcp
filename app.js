@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRouter);
 app.use('/project', projectRouter);
 app.use('/influencer', influencerRouter);
+app.use('/payment', paymentRouter);
 // Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

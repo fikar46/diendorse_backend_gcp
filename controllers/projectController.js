@@ -23,7 +23,7 @@ module.exports = {
         })
     },
     getAdsOngoing:(req,res)=>{
-        var sql =`SELECT * from project_ads WHERE status_ads != 5 and id_user= ${req.params.id_user} order by id desc limit 3;`
+        var sql =`SELECT * from project_ads WHERE status_ads != 5 and id_user= ${req.params.id_user} order by id     desc limit 3;`
         conn.query(sql,(err, result) => {
             // console.log(result)
             if(err){
@@ -233,7 +233,7 @@ module.exports = {
         var sql = `SELECT p.id,p.product_name,b.status_bidding,u.email,u.fullname, b.createdAt from project_ads p 
         JOIN bidding b on b.id_project_ads = p.id
         join users u on p.id_user = u.id
-        WHERE b.id_user = ${req.params.id_user} order by b.id desc;`
+        WHERE b.id_user = ${req.params.id_user} and b.status_bidding < 2 order by b.id desc;`
         conn.query(sql,(err, result) => {
             if(err){
                 throw err
