@@ -100,7 +100,7 @@ module.exports = {
         }
     },
     getAllAdsOnGoing : (req,res) => {
-        var categories = req.body.categories ? req.body.categories : []
+        var categories = req.body.categorAds ? req.body.categories : []
         var locations = req.body.locations ? req.body.locations : []
         var min_price = req.body.min_price ? req.body.min_price : 0
         var max_price = req.body.max_price ? req.body.max_price : 0

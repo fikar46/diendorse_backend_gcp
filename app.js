@@ -21,7 +21,7 @@ const bodyParser = require('body-parser');
 const bearerToken = require('express-bearer-token');
 
 const app = express();
-const {authRouter,projectRouter} = require('./router')
+const {authRouter,projectRouter,influencerRouter} = require('./router')
 app.use(bearerToken())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
@@ -38,6 +38,7 @@ app.get('/', (req, res) => {
 });
 app.use('/auth', authRouter);
 app.use('/project', projectRouter);
+app.use('/influencer', influencerRouter);
 // Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
