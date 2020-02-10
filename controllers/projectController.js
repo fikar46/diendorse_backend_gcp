@@ -243,7 +243,7 @@ module.exports = {
         })
     },
     getDataUsersBidding:(req,res)=>{
-        var sql = `SELECT u.fullname,ud.username_ig,ud.followers_ig,ud.engagement_ig,ud.place from bidding b 
+        var sql = `SELECT b.id as id_biding, u.fullname,ud.username_ig,ud.followers_ig,ud.engagement_ig,ud.place from bidding b 
         join users u on u.id = b.id_user
         left join user_details ud on ud.id_user = u.id
         WHERE b.id_project_ads =${req.params.id_ads} and b.status_bidding =0 ORDER by b.id DESC;`
@@ -254,5 +254,53 @@ module.exports = {
                 res.send(result)   
             }
         })
+    },
+
+    getDataBiddingByIdProject : (req,res) => {
+        var sql = `select * from bidding b 
+        join users u on b.id_user = u.id
+        join user_details ud on b.id_user = ud.id_user
+        join project_ads p on b.id_project_ads = p.id where p.id = ${req.params.id_ads};`
+
+        conn.query(sql , (err,result) => {
+            if(err) throw err
+            res.send({error : false,data : result})
+        })
+    },
+
+    updateAdsStatus : (req,res) => {
+        let id = req.body.id
+        let status = req.body.status
+
+        var sql = 'update bidding set status_bidding = ? where id = ?;'
+        conn.query(sql,[status,id] , (err,result) => {
+            if(err) throw err
+            res.send({error : false,message : 'Status Updated'})
+        })
+    },
+
+    getDataBidingWithStatusAndIdAds : (req,res) => {
+        let id_ads = req.body.id_ads
+        let status = req.body.status
+
+        var sql = `select * from bidding b 
+        join users u on b.id_user = u.id
+        join user_details ud on b.id_user = ud.id_user
+        join project_ads p on b.id_project_ads = p.id where p.id = ${id_ads} and b.status_bidding= ${status};`
+
+        conn.query(sql,(err,result) => {
+            if(err) throw err
+            res.send({error : false,data : result})
+        })
+
+    },
+    getAllBids : (req,res) => {
+        var sql = 'select * from bidding;'
+        conn.query(sql,(err,result) =>{
+            if(err) throw err
+            res.send({error : false,data: result})
+        })
     }
 }
+
+
