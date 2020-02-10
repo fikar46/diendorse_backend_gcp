@@ -21,7 +21,7 @@ const bodyParser = require('body-parser');
 const bearerToken = require('express-bearer-token');
 
 const app = express();
-const {authRouter,projectRouter,influencerRouter} = require('./router')
+const {authRouter,projectRouter,influencerRouter,paymentRouter} = require('./router')
 app.use(bearerToken())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
