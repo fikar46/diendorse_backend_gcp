@@ -16,5 +16,6 @@ router.post('/get-all-ads-ongoing',auth,projectController.getAllAdsOnGoing);
 router.get('/get-all-category',auth,projectController.getAllCategoris);
 router.get('/get-all-kabupaten',auth,projectController.getAllKabupaten);
 router.get('/get-project-ads-by-id/:id',auth,projectController.getAdsById);
+router.get('/get-data-user-onbidding/:id_ads',auth,projectController.getDataUsersBidding);
 router.post('/bid-now',auth,projectController.bidNow);
 module.exports = router;
