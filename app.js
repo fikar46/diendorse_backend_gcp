@@ -41,7 +41,7 @@ app.use('/project', projectRouter);
 app.use('/influencer', influencerRouter);
 app.use('/payment', paymentRouter);
 // Start the server
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 2021;
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
