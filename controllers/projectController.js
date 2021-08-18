@@ -278,6 +278,24 @@ module.exports = {
             res.send({error : false,message : 'Status Updated'})
         })
     },
+    hireInfluencer: (req,res) => {
+        var data = req.body;
+        var cek = `select * from bidding where id_user = ${req.body.id_user} and id_project_ads = ${req.body.id_project_ads}`;
+        conn.query(cek,(errCek,resultCek)=>{
+            if(resultCek.length>0){
+                res.status(409).send({status: "error", message: "the influencer have done bidding on this project"})
+            }else{
+                var sql = `insert into bidding set ?`
+                conn.query(sql,data,(err, result) => {
+                    if(err){
+                        throw err
+                    }else{
+                        res.send(result)   
+                    }
+                })
+            }
+        })
+    },
 
     getDataBidingWithStatusAndIdAds : (req,res) => {
         let id_ads = req.body.id_ads

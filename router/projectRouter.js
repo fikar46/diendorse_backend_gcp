@@ -18,6 +18,7 @@ router.get('/get-all-kabupaten',projectController.getAllKabupaten);
 router.get('/get-project-ads-by-id/:id',auth,projectController.getAdsById);
 router.get('/get-data-user-onbidding/:id_ads',auth,projectController.getDataUsersBidding);
 router.post('/bid-now',auth,projectController.bidNow);
+router.post('/hire-now',auth,projectController.hireInfluencer);
 router.post('/update-ads-status',projectController.updateAdsStatus);
 router.get('/get-data-bid-by-id-project/:id_ads',auth,projectController.getDataBiddingByIdProject)
 router.get('/get-all-bids',projectController.getAllBids)
