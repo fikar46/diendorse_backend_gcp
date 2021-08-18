@@ -164,35 +164,39 @@ module.exports = {
         let data ={}
         conn.query(sql,user_id,(err,result) => {
             if(err) throw err
-            console.log(result.length)
-            // if(result.length > 0){
-                data = result
-                console.log('masuk')
-                var sql = 'select fullname from users where id = ?'
-                conn.query(sql,user_id,(err,result_2) => {
-                    if(err) throw err
-                    console.log(result_2[0].fullname)
-                    if(data.length > 0){
-                        data = data[0]
-                        console.log('masuk')
-                        console.log(data)
-                        data.fullname = result_2[0].fullname
-                        console.log(data)
-                        res.send({
-                            error : false,
-                            data : data
-                        })
-                    }else{
-                        res.send({
-                            error : false,
-                            data : {fullname : result_2[0].fullname}
-                        })
-                    }
-                    
+            if(result.length >0){
+                console.log(result.length)
+                // if(result.length > 0){
+                    data = result
+                    console.log('masuk')
+                    var sql = 'select fullname from users where id = ?'
+                    conn.query(sql,user_id,(err,result_2) => {
+                        if(err) throw err
+                        console.log(result_2[0].fullname)
+                        if(data.length > 0){
+                            data = data[0]
+                            console.log('masuk')
+                            console.log(data)
+                            data.fullname = result_2[0].fullname
+                            console.log(data)
+                            res.send({
+                                error : false,
+                                data : data
+                            })
+                        }else{
+                            res.send({
+                                error : false,
+                                data : {fullname : result_2[0].fullname}
+                            })
+                        }
+                        
+                    })
+            }else{
+                res.send({
+                    error : true,
+                    data : {message:"data belum ada"}
                 })
-            // }
-            
-            // data = {...data,}
+            }
         })
     },
     getAllKabupaten : (req,res) => {
