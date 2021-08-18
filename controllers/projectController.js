@@ -11,6 +11,16 @@ module.exports = {
             }
         })
     },
+    accountInterest:(req,res)=>{
+        var sql = `select * from interest;`;
+        conn.query(sql,(err, result) => {
+            if(err){
+                throw err
+            }else{
+                res.send(result)   
+            }
+        })
+    },
     createAds:(req,res) => {
         var data = req.body;
         var sql = `insert into project_ads set ?`;

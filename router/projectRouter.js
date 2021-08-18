@@ -11,6 +11,7 @@ router.get('/get-history-ads/:id_user',auth,projectController.getAdsHistory);
 router.get('/get-history-ads-all/:id_user',auth,projectController.getAdsHistoryAll);
 router.get('/get-onbidding-by-id/:id_user',auth,projectController.getOnBiddingByid);
 router.get('/category-ads',auth,projectController.categorAds);
+router.get('/account-interest',auth,projectController.accountInterest);
 router.post('/upload-file',auth,projectController.uploadFile);
 router.post('/get-all-ads-ongoing',projectController.getAllAdsOnGoing);
 router.get('/get-all-category',projectController.getAllCategoris);
