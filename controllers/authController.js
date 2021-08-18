@@ -27,7 +27,7 @@ module.exports = {
                 conn.query(sql, dataUser, (err1, result1) => {
                     if(err1) throw err1
                     var mailOptions = {
-                        from: 'No Reply <mzulfikarmey@gmail.com>',
+                        from: 'No Reply <noreply@siapptn.com>',
                         to : email,
                         subject : 'Hola pengguna diendorse',
                         html: `<p><b>Hallo ${fullname}</b></p>
