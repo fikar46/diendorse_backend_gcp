@@ -19,6 +19,10 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bearerToken = require('express-bearer-token');
+var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/api.meylendra.com-0001/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/api.meylendra.com-0001/fullchain.pem', 'utf8');
 
 const app = express();
 const {authRouter,projectRouter,influencerRouter,paymentRouter} = require('./router')
@@ -42,10 +46,16 @@ app.use('/influencer', influencerRouter);
 app.use('/payment', paymentRouter);
 // Start the server
 const PORT = process.env.PORT || 2021;
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
+var httpsServer = https.createServer(credentials, app);
+var date = new Date()
+date.setUTCDate(date.getUTCDate()+7)
+console.log("aktif pada " + date) 
+httpServer.listen(8443, () => console.log('API Aktif di port ' + 8443));
+httpsServer.listen(port, () => console.log('API Aktif di port ' + PORT));
+// app.listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}`);
+//   console.log('Press Ctrl+C to quit.');
+// });
 // [END gae_node_request_example]
 
 module.exports = app;
