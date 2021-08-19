@@ -47,6 +47,7 @@ app.use('/influencer', influencerRouter);
 app.use('/payment', paymentRouter);
 // Start the server
 const PORT = process.env.PORT || 2021;
+var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 var date = new Date()
 date.setUTCDate(date.getUTCDate()+7)
