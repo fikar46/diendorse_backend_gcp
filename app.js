@@ -52,7 +52,7 @@ var httpsServer = https.createServer(credentials, app);
 var date = new Date()
 date.setUTCDate(date.getUTCDate()+7)
 console.log("aktif pada " + date) 
-httpServer.listen(8443, () => console.log('API Aktif di port ' + 8443));
+httpServer.listen(2022, () => console.log('API Aktif di port ' + 2022));
 httpsServer.listen(PORT, () => console.log('API Aktif di port ' + PORT));
 // app.listen(PORT, () => {
 //   console.log(`App listening on port ${PORT}`);
