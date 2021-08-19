@@ -24,7 +24,7 @@ var http = require('http');
 var https = require('https');
 var privateKey  = fs.readFileSync('/etc/letsencrypt/live/api.meylendra.com-0001/privkey.pem', 'utf8');
 var certificate = fs.readFileSync('/etc/letsencrypt/live/api.meylendra.com-0001/fullchain.pem', 'utf8');
-
+var credentials = {key: privateKey, cert: certificate};
 const app = express();
 const {authRouter,projectRouter,influencerRouter,paymentRouter} = require('./router')
 app.use(bearerToken())
