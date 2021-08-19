@@ -11,7 +11,7 @@ module.exports = {
         var id_project = req.body.id_project
         var responseSuccess = {
             id_user : user.id,
-            status:"settlement",
+            status:"Y",
             total_price:amount,
             id_ads:id_project
         }
@@ -22,7 +22,19 @@ module.exports = {
                 // throw err
                 console.log(err)
             }else{
-                res.send(result)   
+                var update = `update project_ads set status_ads = 2 where id_user = ${req.body.user.id} and id = ${req.body.id_project} `
+                conn.query(update,(err,result)=>{
+                    if(err){
+                        throw err
+                    }
+                    var update2 = `update bidding set status_bidding = 2 where status_bidding < 2 and id_project_ads = ${req.body.id_project} `
+                    conn.query(update2,(err2,result2)=>{
+                        if(err2){
+                            throw err2
+                        }
+                        res.send({message:"update"})
+                    })    
+                })
             }
         })
         // var headers = {
