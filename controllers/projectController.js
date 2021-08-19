@@ -328,6 +328,16 @@ module.exports = {
             if(err) throw err
             res.send({error : false,data: result})
         })
+    },
+    getOngoingInfluencer:(req,res)=>{
+        var sql =`SELECT b.id,b.id_user,b.id_project_ads,b.price,p.product_name,p.created_ads,u.fullname from bidding b
+        join project_ads p on p.id = b.id_project_ads
+        join users u on u.id = p.id_user
+        where b.id_user = ${req.body.id_user} and b.status_bidding = 2;`
+        conn.query(sql,(err,result) =>{
+            if(err) throw err
+            res.send({error : false,data: result})
+        })
     }
 }
 
